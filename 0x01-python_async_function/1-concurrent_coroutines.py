@@ -5,7 +5,6 @@ int arguments
 """
 
 import asyncio
-import random
 from typing import List
 
 
@@ -16,8 +15,11 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     """
     method to wait for return value
     """
-    wait_list: list = []
-    for n in range(n):
-        wait_list.append(await wait_random(max_delay))
-    wait_list.sort()
-    return wait_list
+    for i in range(n):
+        task = wait_random(max_delay)
+        tasks.append(task)
+    for task in asyncio.as_completed(tasks):
+        delay = await task
+        delays.append(delay)
+        
+    return delays
